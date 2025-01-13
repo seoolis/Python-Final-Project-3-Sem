@@ -1,0 +1,26 @@
+body {
+    background-color: #ccccff;
+}
+
+header {
+    padding: 15px 20px;
+    background-color: #fffff;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header img {
+    height: 50px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: black;
+}
+
+aside {
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
