@@ -3,6 +3,121 @@
 {% block title %}Общая статистика{% endblock %}
 
 {% block content %}
-    <h1>Общая статистика</h1>
-    <p>Общая статистика о профессии.</p>
+<div class="container mt-4">
+    <h1 class="mb-4">Общая статистика для профессии Backend-разработчик</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-3">Динамика уровня зарплат по годам</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Год</th>
+                            <th>Средняя З/П (руб.)</th>
+                            <th>Средняя З/П - Backend-разработчик (руб.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in analytics %}
+                        <tr>
+                            <td>{{ row.year }}</td>
+                            <td>{{ row.average_salary }}</td>
+                            <td>{{ row.average_salary_backend }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <canvas id="salaryDynamicsChart" class="mb-5"></canvas>
+
+            <h2 class="mb-3">Динамика количества вакансий по годам</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Год</th>
+                            <th>Количество вакансий</th>
+                            <th>Количество вакансий - Backend-разработчик</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in analytics %}
+                        <tr>
+                            <td>{{ row.year }}</td>
+                            <td>{{ row.vacancies }}</td>
+                            <td>{{ row.vacancies_backend }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <canvas id="vacanciesDynamicsChart" class="mb-5"></canvas>
+
+            <h2 class="mb-3">Уровень зарплат по городам</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Город</th>
+                            <th>Средняя З/П (руб.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in city_salary_data %}
+                        <tr>
+                            <td>{{ row.city }}</td>
+                            <td>{{ row.average_salary }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <canvas id="citySalaryChart" class="mb-5"></canvas>
+
+            <h2 class="mb-3">Доля вакансий по городам</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Город</th>
+                            <th>Доля вакансий (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in city_vacancy_data %}
+                        <tr>
+                            <td>{{ row.city }}</td>
+                            <td>{{ row.vacancy_share }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <canvas id="cityVacancyChart" class="mb-5"></canvas>
+
+            <h2 class="mb-3">ТОП-20 навыков по годам</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Год</th>
+                            <th>Навык</th>
+                            <th>Частота</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in top_skills %}
+                        <tr>
+                            <td>{{ row.year }}</td>
+                            <td>{{ row.skill }}</td>
+                            <td>{{ row.frequency }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <canvas id="topSkillsChart" class="mb-5"></canvas>
+        </div>
+    </div>
+</div>
 {% endblock %}

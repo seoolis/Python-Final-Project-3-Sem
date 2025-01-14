@@ -12,42 +12,38 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">
 </head>
 <body>
-    <header>
-        <img src="{% static 'main/img/logo-svgrepo-com.svg' %}" alt="Лого">
-        <h1>BlackElephant</h1>
-    </header>
-    <div class="container-fluid">
-        <div class="row">
-            <aside class="col-md-3 bg-light p-3">
-                <h3>Навигация</h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa-solid fa-house"></i> Главная страница</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Общая статистика</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa-solid fa-fire"></i> Востребованность</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa-solid fa-earth-americas"></i> География</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa-solid fa-kitchen-set"></i> Навыки</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"><i class="fa-solid fa-briefcase"></i> Последние вакансии</a>
-                    </li>
-                </ul>
-            </aside>
-        </div>
-    </div>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <footer class="bg-white text-gray text-center py-3">
-        <p>Малышева Вероника Евгеньевна РИ-230944</p>
-    </footer>
+<header>
+    <img src="{% static 'main/img/logo-svgrepo-com.svg' %}" alt="Лого">
+    <h1>BlackElephant</h1>
+</header>
+        <aside class="col-md-3 bg-light p-3">
+            <h3>Навигация</h3>
+            <ul class="nav flex-column">
+                <li class="nav nav-tabs">
+                    <a href="{% url 'home' %}" class="nav-link"><i class="fa-solid fa-house"></i> Главная страница</a>
+                </li>
+                <li class="nav nav-tabs">
+                    <a href="{% url 'statistic' %}" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Общая статистика</a>
+                </li>
+                <li class="nav nav-tabs">
+                    <a href="{% url 'demand' %}" class="nav-link"><i class="fa-solid fa-fire"></i> Востребованность</a>
+                </li>
+                <li class="nav nav-tabs">
+                    <a href="{% url 'geography' %}" class="nav-link"><i class="fa-solid fa-earth-americas"></i> География</a>
+                </li>
+                <li class="nav nav-tabs">
+                    <a href="{% url 'skills' %}" class="nav-link"><i class="fa-solid fa-kitchen-set"></i> Навыки</a>
+                </li>
+                <li class="nav nav-tabs">
+                    <a href="{% url 'vacancies' %}" class="nav-link"><i class="fa-solid fa-briefcase"></i> Последние вакансии</a>
+                </li>
+            </ul>
+        </aside>
+<main class="col-md-9 p-3">
+    {% block content %}
+    {% endblock %}
+</main>
+<footer class="bg-white text-gray text-center py-3">
+    <p>Малышева Вероника Евгеньевна РИ-230944</p>
+</footer>
 </body>

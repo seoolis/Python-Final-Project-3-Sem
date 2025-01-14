@@ -23,4 +23,9 @@ header h1 {
 
 aside {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    float: left;
+    width: 20%;
+    padding: 2.5%;
+    height: 60vh;
+    border-bottom: 5px solid #a3a3d1;
 }
