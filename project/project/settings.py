@@ -78,10 +78,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'vacancies_2024',  # Имя базы данных
+        'USER': 'postgres',  # Имя пользователя (например, postgres)
+        'PASSWORD': '123',  # Пароль пользователя
+        'HOST': 'localhost',  # Хост (если база на локальном сервере, оставьте 'localhost')
+        'PORT': '5432',  # Порт по умолчанию для PostgreSQL
     }
 }
+
 
 
 # Password validation
@@ -121,7 +126,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'main/templates/main/static',
+    BASE_DIR / 'main/static',
 ]
 
 # Default primary key field type

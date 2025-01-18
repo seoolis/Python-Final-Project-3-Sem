@@ -3,8 +3,6 @@ from django.shortcuts import render
 def index(request):
     data = {
         'title': 'Главная',
-        'description': 'Описание профессии Backend-разработчика (текст минимум на 2000 символов)',
-        'image_url': '/static/main/img/photo.svg'
     }
     return render(request, 'main/index.html', data)
 
