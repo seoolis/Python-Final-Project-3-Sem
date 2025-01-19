@@ -31,9 +31,12 @@ def registerPage(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            print(f"Пользователь {user.username} успешно зарегистрирован.")  # Это поможет понять, что регистрация прошла
             messages.success(request, 'Вы успешно зарегистрировались!')
-            login(request, user)
-            return redirect('home')
+            login(request, user)  # Авторизация сразу после регистрации
+            return redirect('home')  # Перенаправление на главную страницу
+        else:
+            print("Форма не прошла валидацию.")  # Это покажет, если форма невалидна
     else:
         form = UserCreationForm()
     return render(request, 'main/register.html', {'form': form})
