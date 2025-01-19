@@ -5,9 +5,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),
-    path('demand/', include('main.urls')),
-    path('geography/', include('main.urls')),
-    path('skills/', include('main.urls')),
-    path('vacancies/', include('main.urls')),
+    path('', include('app.urls')),
+    path('demand/', include('app.urls')),
+    path('geography/', include('app.urls')),
+    path('skills/', include('app.urls')),
+    path('vacancies/', include('app.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
