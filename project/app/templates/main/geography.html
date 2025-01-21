@@ -1,11 +1,12 @@
 {% extends 'main/layout.html' %}
 
-{% block title %}География{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
+<div class="container mt-4">
     <h1 class="mb-4">География для профессии Backend-разработчик</h1>
     <div class="row">
+        <!-- Уровень зарплат по городам -->
         <div class="col-md-6">
             <h2 class="mb-3">Уровень зарплат по городам</h2>
             <div class="table-responsive mb-4">
@@ -19,8 +20,8 @@
                     <tbody>
                         {% for row in city_salary_data %}
                         <tr>
-                            <td>{{ row.city }}</td>
-                            <td>{{ row.average_salary }}</td>
+                            <td>{{ row.area_name }}</td>
+                            <td>{{ row.average_salary|floatformat:2 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -29,6 +30,7 @@
             <canvas id="citySalaryChart" class="mb-5"></canvas>
         </div>
 
+        <!-- Доля вакансий по городам -->
         <div class="col-md-6">
             <h2 class="mb-3">Доля вакансий по городам</h2>
             <div class="table-responsive mb-4">
@@ -42,8 +44,8 @@
                     <tbody>
                         {% for row in city_vacancy_data %}
                         <tr>
-                            <td>{{ row.city }}</td>
-                            <td>{{ row.vacancy_share }}</td>
+                            <td>{{ row.area_name }}</td>
+                            <td>{{ row.percentage|floatformat:2 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

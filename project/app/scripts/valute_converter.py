@@ -1,3 +1,5 @@
+#Скрипт на создание currency_table, конвертирует валюты.
+
 import pandas as pd
 import psycopg2
 import re

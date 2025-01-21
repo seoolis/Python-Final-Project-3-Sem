@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vacancies_2024',  # Имя базы данных
+        'NAME': 'backend',  # Имя базы данных
         'USER': 'postgres',  # Имя пользователя (например, postgres)
         'PASSWORD': '123',  # Пароль пользователя
         'HOST': 'localhost',  # Хост (если база на локальном сервере, оставьте 'localhost')
@@ -88,6 +88,8 @@ DATABASES = {
     }
 }
 
+#veronika
+#11022005
 
 #root
 #111

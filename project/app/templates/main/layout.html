@@ -7,44 +7,94 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">
     <link rel="icon" type="image/x-icon" href="{% static 'main/img/favicon.ico' %}">
+    <style>
+        /* Подвал фиксированный */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1050; /* Чтобы был поверх контента */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Устанавливаем чёрный цвет для текста в навигации */
+        .nav-link {
+            color: #000; /* Чёрный цвет текста */
+        }
+
+        /* При наведении на ссылку изменяем цвет */
+        .nav-link:hover {
+            color: #ACACEC;
+        }
+
+        /* Устанавливаем чёрный цвет для текста в заголовке */
+        header h1 {
+            color: #000;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <img src="{% static 'main/img/logo-svgrepo-com.svg' %}" alt="Лого">
-    <h1>BlackElephant</h1>
+<header style="position: sticky; top: 0; background-color: #fff; z-index: 1000; padding: 10px 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center;">
+        <img src="{% static 'main/img/logo-svgrepo-com.svg' %}" alt="Лого" style="height: 40px; margin-right: 10px;">
+        <h1 style="margin: 0;">BlackElephant</h1>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-danger">Выйти из аккаунта</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Войти</a>
+            <a href="{% url 'register' %}" class="btn btn-primary">Регистрация</a>
+        {% endif %}
+    </div>
 </header>
-        <aside class="col-md-3 bg-light p-3">
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Левая панель с навигацией -->
+        <aside class="col-md-2 p-3" style="position: sticky; top: 50px; background-color: #FFFFFF;">
             <h3>Навигация</h3>
             <ul class="nav flex-column">
-                <li class="nav nav-tabs">
+                <li class="">
                     <a href="{% url 'home' %}" class="nav-link"><i class="fa-solid fa-house"></i> Главная страница</a>
                 </li>
-                <li class="nav nav-tabs">
-                    <a href="{% url 'statistic' %}" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Общая статистика</a>
+                <li class="">
+                    <a href="{% url 'statistic' %}" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Общая
+                        статистика</a>
                 </li>
-                <li class="nav nav-tabs">
+                <li class="">
                     <a href="{% url 'demand' %}" class="nav-link"><i class="fa-solid fa-fire"></i> Востребованность</a>
                 </li>
-                <li class="nav nav-tabs">
+                <li class="">
                     <a href="{% url 'geography' %}" class="nav-link"><i class="fa-solid fa-earth-americas"></i> География</a>
                 </li>
-                <li class="nav nav-tabs">
+                <li class="">
                     <a href="{% url 'skills' %}" class="nav-link"><i class="fa-solid fa-kitchen-set"></i> Навыки</a>
                 </li>
-                <li class="nav nav-tabs">
-                    <a href="{% url 'vacancies' %}" class="nav-link"><i class="fa-solid fa-briefcase"></i> Последние вакансии</a>
+                <li class="">
+                    <a href="{% url 'vacancies' %}" class="nav-link"><i class="fa-solid fa-briefcase"></i> Последние
+                        вакансии</a>
                 </li>
             </ul>
         </aside>
-<main class="col-md-9 p-3">
-    {% block content %}
-    {% endblock %}
-</main>
+
+        <!-- Основной контент -->
+        <main class="col-md-9 p-3" style="padding-top: 20px;"> <!-- Отступ сверху для основного контента -->
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</div>
+
 <footer class="bg-white text-gray text-center py-3">
     <p>Малышева Вероника Евгеньевна РИ-230944</p>
 </footer>
+
 </body>
+</html>

@@ -1,3 +1,5 @@
+#Скрипт предназначен для того, чтобы извлечь данные о валютных курсах ЦБР для определённого диапазона дат.
+
 import pandas as pd
 import requests
 import xml.etree.ElementTree as ET

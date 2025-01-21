@@ -1,3 +1,5 @@
+#Скрипт вычисляет количество ВСЕХ вакансий за год.
+
 import pandas as pd
 
 # Чтение данных из исходного файла test.csv
@@ -7,9 +9,9 @@ vacancies = pd.read_csv('D:/Project/Python/django-web-app/project/test.csv', enc
 vacancies['year'] = vacancies['published_at'].str[:4]
 
 # Группировка по году и подсчет общего количества вакансий (включая повторяющиеся)
-total_vacancy_count_per_year = vacancies.groupby('year').size().reset_index(name='общее_количество_вакансий')
+total_vacancy_count_per_year = vacancies.groupby('year').size().reset_index(name='count')
 
 # Сохранение в новый CSV файл с нужными данными
-total_vacancy_count_per_year.to_csv('D:/Project/Python/django-web-app/project/all_vacancy_by_year.csv', index=False)
+total_vacancy_count_per_year.to_csv('D:/Project/Python/django-web-app/project/all_vacancy.csv', index=False)
 
-print("Новый файл успешно создан: all_vacancy_by_year.csv")
+print("Новый файл успешно создан: all_vacancy.csv")

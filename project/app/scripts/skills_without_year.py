@@ -1,3 +1,7 @@
+# Скрипт предназначен для того, чтобы извлечь популярные навыки только для профессии бэкендера.
+# Извлекается без года. То есть это навыки бэкендера с общим кол-вом упоминания.
+# Выводит: Навык, Количество упоминаний
+
 import psycopg2
 from collections import Counter
 import csv
@@ -5,9 +9,9 @@ import csv
 # Подключение к базе данных PostgreSQL
 def get_connection():
     return psycopg2.connect(
-        dbname="your_database_name",
-        user="your_username",
-        password="your_password",
+        dbname="vacancies_2024",
+        user="postgres",
+        password="123",
         host="localhost",
         port="5432"
     )
@@ -44,7 +48,9 @@ def get_top_skills():
             if not skill_data:
                 return []
             # Учитываем разные разделители: ';', ',', '\n'
-            return [skill.strip() for skill in skill_data.replace("\r", "").replace(",", ";").split(";") if skill.strip()]
+            skills = [skill.strip() for skill in skill_data.replace("\r", "").replace(",", ";").split(";") if skill.strip()]
+            # Фильтруем "нет данных"
+            return [skill for skill in skills if "нет данных" not in skill.lower()]
 
         all_skills = []
         for row in rows:
@@ -66,10 +72,10 @@ def get_top_skills():
             conn.close()
 
 # Запись в CSV-файл
-def save_to_csv(skills_data, filename="top_skills_backend.csv"):
+def save_to_csv(skills_data, filename="top_20_skills_backend.csv"):
     try:
         with open(filename, mode="w", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file, delimiter="\t")  # Используем табуляцию как разделитель
+            writer = csv.writer(file, delimiter="|")  # Используем | как разделитель
             writer.writerow(["Навык", "Количество упоминаний"])  # Заголовки колонок
             writer.writerows(skills_data)
         print(f"Результаты успешно сохранены в файл: {filename}")

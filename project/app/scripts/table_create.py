@@ -1,3 +1,5 @@
+#Скрипт предназначен для того, чтобы по разделителю | создать table.csv
+
 import csv
 import re
 import os
