@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Общая статистика для профессии Backend-разработчик</h1>
+    <h1 class="mb-4">Общая статистика</h1>
 
     <!-- Динамика уровня зарплат по годам -->
     <h2 class="mb-3">Динамика уровня зарплат по годам</h2>
@@ -26,6 +26,7 @@
             </tbody>
         </table>
     </div>
+    <canvas id="salaryByYearChart" class="mb-5"></canvas>
 
     <!-- Динамика количества вакансий по годам -->
     <h2 class="mb-3">Динамика количества вакансий по годам</h2>
@@ -47,6 +48,7 @@
             </tbody>
         </table>
     </div>
+    <canvas id="vacanciesByYearChart" class="mb-5"></canvas>
 
     <!-- Уровень зарплат по городам -->
     <h2 class="mb-3">Уровень зарплат по городам</h2>
@@ -68,6 +70,7 @@
             </tbody>
         </table>
     </div>
+    <canvas id="citySalaryChart" class="mb-5"></canvas>
 
     <!-- Доля вакансий по городам -->
     <h2 class="mb-3">Доля вакансий по городам</h2>
@@ -89,5 +92,95 @@
             </tbody>
         </table>
     </div>
+    <canvas id="cityVacancyChart" class="mb-5"></canvas>
+
+    <!-- ТОП-20 навыков по годам -->
+    <h2 class="mb-3">ТОП-20 навыков по годам</h2>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Год</th>
+                    <th>Навык</th>
+                    <th>Частота</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in top_skills_by_year %}
+                <tr>
+                    <td>{{ row.year }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Динамика уровня зарплат по годам
+    var salaryByYearData = JSON.parse('{{ salary_year_data|escapejs }}');
+    var salaryByYearChart = new Chart(document.getElementById('salaryByYearChart'), {
+        type: 'line',
+        data: {
+            labels: salaryByYearData.map(item => item.year),
+            datasets: [{
+                label: 'Средняя зарплата',
+                data: salaryByYearData.map(item => item.salary),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: false
+            }]
+        }
+    });
+
+    // Динамика количества вакансий по годам
+    var vacancyByYearData = JSON.parse('{{ vacancy_year_data|escapejs }}');
+    var vacanciesByYearChart = new Chart(document.getElementById('vacanciesByYearChart'), {
+        type: 'bar',
+        data: {
+            labels: vacancyByYearData.map(item => item.year),
+            datasets: [{
+                label: 'Количество вакансий',
+                data: vacancyByYearData.map(item => item.vacancy_count),
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // Уровень зарплат по городам
+    var citySalaryData = JSON.parse('{{ city_salary|escapejs }}');
+    var citySalaryChart = new Chart(document.getElementById('citySalaryChart'), {
+        type: 'bar',
+        data: {
+            labels: citySalaryData.map(item => item.city),
+            datasets: [{
+                label: 'Средняя зарплата',
+                data: citySalaryData.map(item => item.salary),
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // Доля вакансий по городам
+    var cityVacancyData = JSON.parse('{{ city_vacancy|escapejs }}');
+    var cityVacancyChart = new Chart(document.getElementById('cityVacancyChart'), {
+        type: 'pie',
+        data: {
+            labels: cityVacancyData.map(item => item.city),
+            datasets: [{
+                label: 'Доля вакансий (%)',
+                data: cityVacancyData.map(item => item.percentage),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                hoverOffset: 4
+            }]
+        }
+    });
+</script>
 {% endblock %}

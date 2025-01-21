@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Vacancy, FormattedVacancy, FormattedVacancyAll, SkillByYear, SkillsBackend, SkillsBackendByYear, \
     VacancyStatistic, BackendVacancyStatistic, AverageSalary, BackendAverageSalary, Salary, SalaryBackend, PartArea, \
-    PartAreaBackend
+    PartAreaBackend, GraphImage, DataTable
 from .models import Currency
 
 class VacancyAdmin(admin.ModelAdmin):
@@ -60,6 +60,14 @@ class PartAreaAdmin(admin.ModelAdmin):
 class PartAreaBackendAdmin(admin.ModelAdmin):
     list_display = ('area_name', 'percentage')
 
+class GraphImageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'image', 'created_at')
+
+class DataTableAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+
+admin.site.register(DataTable, DataTableAdmin)
+admin.site.register(GraphImage, GraphImageAdmin)
 admin.site.register(Vacancy, VacancyAdmin)
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(FormattedVacancy, FormattedVacancyAdmin)

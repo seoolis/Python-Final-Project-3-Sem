@@ -198,3 +198,21 @@ class PartAreaBackend(models.Model): #Доля зарплат по города�
         db_table = 'part_area_backend'
         verbose_name = "Доля вакансий по городам для Backend"
         verbose_name_plural = "Доля вакансий по городам для Backend"
+
+#Графики
+
+class GraphImage(models.Model):
+    title = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='graphs/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class DataTable(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField(help_text="HTML содержимое для таблицы")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

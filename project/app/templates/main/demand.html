@@ -58,4 +58,39 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Динамика уровня зарплат по годам
+    var salaryByYearData = JSON.parse('{{ salary_year_data|escapejs }}');
+    var salaryByYearChart = new Chart(document.getElementById('salaryByYearChart'), {
+        type: 'line',
+        data: {
+            labels: salaryByYearData.map(item => item.year),
+            datasets: [{
+                label: 'Средняя зарплата',
+                data: salaryByYearData.map(item => item.salary),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: false
+            }]
+        }
+    });
+
+    // Динамика количества вакансий по годам
+    var vacancyByYearData = JSON.parse('{{ vacancy_year_data|escapejs }}');
+    var vacanciesByYearChart = new Chart(document.getElementById('vacanciesByYearChart'), {
+        type: 'bar',
+        data: {
+            labels: vacancyByYearData.map(item => item.year),
+            datasets: [{
+                label: 'Количество вакансий',
+                data: vacancyByYearData.map(item => item.vacancy_count),
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
 {% endblock %}

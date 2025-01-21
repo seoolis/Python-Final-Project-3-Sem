@@ -1,7 +1,8 @@
+import json
 from datetime import datetime
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import SalaryBackend, PartAreaBackend
+from .models import SalaryBackend, PartAreaBackend, AverageSalary
 from .models import BackendAverageSalary, BackendVacancyStatistic
 from .models import SkillsBackend, SkillsBackendByYear
 from django.shortcuts import render, redirect
@@ -19,7 +20,7 @@ def index(request):
 #@login_required
 def general(request):
     # Динамика уровня зарплат по годам
-    salary_by_year = BackendAverageSalary.objects.all().order_by('year')
+    salary_by_year = AverageSalary.objects.all().order_by('year')
 
     # Динамика количества вакансий по годам
     vacancies_by_year = VacancyStatistic.objects.all().order_by('year')
@@ -30,13 +31,21 @@ def general(request):
     # Доля вакансий по городам для всех профессий
     city_vacancy_data = PartArea.objects.all().order_by('-percentage')
 
-    # ТОП-20 навыков по годам (оставляем только шаблон)
+    # Преобразуем данные в формат JSON для использования в Chart.js
+    salary_year_data = [{"year": row.year, "salary": row.salary} for row in salary_by_year]
+    vacancy_year_data = [{"year": row.year, "vacancy_count": row.vacancy_count} for row in vacancies_by_year]
+    city_salary = [{"city": row.area_name, "salary": row.average_salary} for row in city_salary_data]
+    city_vacancy = [{"city": row.area_name, "percentage": row.percentage} for row in city_vacancy_data]
 
     context = {
         'salary_by_year': salary_by_year,
         'vacancies_by_year': vacancies_by_year,
         'city_salary_data': city_salary_data,
         'city_vacancy_data': city_vacancy_data,
+        'salary_year_data': json.dumps(salary_year_data),
+        'vacancy_year_data': json.dumps(vacancy_year_data),
+        'city_salary': json.dumps(city_salary),
+        'city_vacancy': json.dumps(city_vacancy),
         'title': 'Общая статистика',
     }
 
@@ -49,12 +58,19 @@ def demand(request):
     # Динамика количества вакансий по годам
     vacancies_by_year = BackendVacancyStatistic.objects.all().order_by('year')
 
+    # Преобразуем данные в формат JSON для использования в Chart.js
+    salary_year_data = [{"year": row.year, "salary": row.salary} for row in salary_by_year]
+    vacancy_year_data = [{"year": row.year, "vacancy_count": row.vacancy_count} for row in vacancies_by_year]
+
     context = {
         'salary_by_year': salary_by_year,
         'vacancies_by_year': vacancies_by_year,
+        'salary_year_data': json.dumps(salary_year_data),
+        'vacancy_year_data': json.dumps(vacancy_year_data),
         'title': 'Востребованность',
     }
     return render(request, 'main/demand.html', context)
+
 
 def skills(request):
     # Определяем текущий год
@@ -69,10 +85,14 @@ def skills(request):
     # Генерируем список годов (2015–2024)
     years = list(range(2015, 2025))
 
+    # Преобразуем данные в формат JSON для использования в Chart.js
+    skills_json_data = [{"name": skill.name, "count": skill.count} for skill in skills_data]
+
     context = {
         'skills_data': skills_data,
         'years': years,
         'selected_year': selected_year,
+        'skills_json_data': json.dumps(skills_json_data),
         'title': 'Навыки',
     }
     return render(request, 'main/skills.html', context)
@@ -84,11 +104,18 @@ def geography(request):
     # Доля вакансий по городам для Backend-разработчиков
     city_vacancy_data = PartAreaBackend.objects.all().order_by('-percentage')[:10]  # ТОП-10 по убыванию доли
 
+    # Преобразуем данные в формат JSON для использования в Chart.js
+    city_salary = [{"city": row.area_name, "salary": row.average_salary} for row in city_salary_data]
+    city_vacancy = [{"city": row.area_name, "percentage": row.percentage} for row in city_vacancy_data]
+
     context = {
         'city_salary_data': city_salary_data,
         'city_vacancy_data': city_vacancy_data,
+        'city_salary': json.dumps(city_salary),
+        'city_vacancy': json.dumps(city_vacancy),
         'title': 'География',
     }
+
     return render(request, 'main/geography.html', context)
 
 def vacancies(request):
