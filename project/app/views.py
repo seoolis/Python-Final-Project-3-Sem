@@ -19,16 +19,19 @@ def index(request):
 
 #@login_required
 def general(request):
-    # Динамика уровня зарплат по годам
+    # Получаем доступные года для фильтрации (сортируем по убыванию)
+    years = SkillByYear.objects.values_list('year', flat=True).distinct().order_by('-year')
+
+    # По умолчанию выбираем 2024 год
+    selected_year = request.GET.get('year', '2024')
+
+    # Данные для выбранного года (ТОП-20 навыков)
+    top_skills_by_year = SkillByYear.objects.filter(year=selected_year).order_by('-count')[:20]
+
+    # Данные для графиков (например, динамика зарплат и вакансий)
     salary_by_year = AverageSalary.objects.all().order_by('year')
-
-    # Динамика количества вакансий по годам
     vacancies_by_year = VacancyStatistic.objects.all().order_by('year')
-
-    # Уровень зарплат по городам для всех профессий
     city_salary_data = Salary.objects.all().order_by('-average_salary')
-
-    # Доля вакансий по городам для всех профессий
     city_vacancy_data = PartArea.objects.all().order_by('-percentage')
 
     # Преобразуем данные в формат JSON для использования в Chart.js
@@ -36,16 +39,22 @@ def general(request):
     vacancy_year_data = [{"year": row.year, "vacancy_count": row.vacancy_count} for row in vacancies_by_year]
     city_salary = [{"city": row.area_name, "salary": row.average_salary} for row in city_salary_data]
     city_vacancy = [{"city": row.area_name, "percentage": row.percentage} for row in city_vacancy_data]
+    top_skills = [{"year": row.year, "name": row.name, "count": row.count} for row in top_skills_by_year]
 
+    # Передаем все данные в контексте для использования в шаблоне
     context = {
         'salary_by_year': salary_by_year,
         'vacancies_by_year': vacancies_by_year,
         'city_salary_data': city_salary_data,
         'city_vacancy_data': city_vacancy_data,
+        'top_skills_by_year': top_skills_by_year,
+        'selected_year': selected_year,
+        'years': years,
         'salary_year_data': json.dumps(salary_year_data),
         'vacancy_year_data': json.dumps(vacancy_year_data),
         'city_salary': json.dumps(city_salary),
         'city_vacancy': json.dumps(city_vacancy),
+        'top_skills': json.dumps(top_skills),
         'title': 'Общая статистика',
     }
 
@@ -96,6 +105,7 @@ def skills(request):
         'title': 'Навыки',
     }
     return render(request, 'main/skills.html', context)
+
 
 def geography(request):
     # Уровень зарплат по городам для Backend-разработчиков
